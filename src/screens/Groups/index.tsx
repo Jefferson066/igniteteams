@@ -13,7 +13,7 @@ import { groupsGetAll } from "@storage/group/groupsGetAll";
 
 export function Groups() {
     const [groups, setGroups] = useState<string[]>([]);
-    
+
     const { navigate } = useNavigation();
 
     function handleNewGroup() {
@@ -29,6 +29,10 @@ export function Groups() {
         }
     }
 
+    const handleOpenGroup = (group: string) => {
+        navigate("players", { group });
+    };
+
     useFocusEffect(
         useCallback(() => {
             fetchGroups();
@@ -43,7 +47,12 @@ export function Groups() {
             <FlatList
                 data={groups}
                 keyExtractor={(item) => item}
-                renderItem={({ item }) => <GroupCard title={item} />}
+                renderItem={({ item }) => (
+                    <GroupCard
+                        onPress={() => handleOpenGroup(item)}
+                        title={item}
+                    />
+                )}
                 contentContainerStyle={groups.length === 0 && { flex: 1 }}
                 ListEmptyComponent={() => (
                     <ListEmpty message="Que tal cadastrar a primeira turma?" />
